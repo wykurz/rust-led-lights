@@ -1,18 +1,19 @@
-{ pkgs ? import <nixpkgs> { crossSystem.config = "armv7l-unknown-linux-gnueabihf"; } }:
+let
+  rust_overlay = import (builtins.fetchTarball https://github.com/oxalica/rust-overlay/archive/master.tar.gz);
+  unstable = import <nixos-unstable-small> { };
+  nixpkgs = import <nixpkgs> { overlays = [ rust_overlay ]; };
+  myrust = nixpkgs.rust-bin.stable."1.63.0".default.override {
+    extensions = [ "rust-src" ];
+    targets = [ "armv7-unknown-linux-musleabihf" ];
+  };
 
-with pkgs;
-rustPlatform.buildRustPackage rec {
-  pname = "rust-led-lights";
-  version = "0.0.1";
-  nativeBuildInputs = [
-    binutils
-    cargo
-    rustc
-    stdenv.cc
-  ];
-
-  src = ./.;
-
-  cargoSha256 = "KRAbh4JWITiV9f7MwOmolm0EIiTCQiXSZvbSe9OCKnI="; # lib.fakeSha256;
-
-}
+in
+  with nixpkgs;
+  stdenv.mkDerivation {
+    name = "rust-shell";
+    buildInputs = [
+      unstable.rust-analyzer  # must be before rust so the PATH picks this one first
+      myrust
+    ];
+    RUST_SRC_PATH = "${myrust}/lib/rustlib/src/rust/src";
+  }
