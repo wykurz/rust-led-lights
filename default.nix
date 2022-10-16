@@ -18,8 +18,5 @@ in
       myrust
     ];
     RUST_SRC_PATH = "${myrust}/lib/rustlib/src/rust/src";
-    shellHook =
-    ''
-      export LD_LIBRARY_PATH=${arm.binutils-unwrapped}/lib
-    '';
+    LD_LIBRARY_PATH = "${arm.binutils-unwrapped}/lib";
   }
