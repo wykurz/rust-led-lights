@@ -17,40 +17,20 @@ pub fn sleep_busy_waiting_ms(ms: u64) {
 /// Returns a pixel with a random color and a minimal
 /// brightness. Tries to get real colors instead of white.
 pub fn get_random_pixel_val() -> (u8, u8, u8) {
-    const COLORS: [(u8, u8, u8); 11] = [
-        // 28
-        // some colors are multiple times listed to increase
-        // their probability.
+    // RED and GREEN are inverted
+    const COLORS: [(u8, u8, u8); 9] = [
         (255, 255, 255), // white
-        (255, 0, 0),     // red
-        (255, 0, 0),     // red
-        (255, 0, 0),     // red
-        // (0, 255, 0),     // green
-        // (0, 0, 255),     // blue
-        // (13, 255, 248),  // turquoise
-        // (13, 255, 248),  // turquoise
-        // (13, 255, 248),  // turquoise
-        // (255, 168, 0),   // dark orange
-        (255, 168, 0), // dark orange
-        (255, 168, 0), // dark orange
-        (255, 168, 0), // dark orange
-        (255, 189, 0), // bright orange
-        (255, 189, 0), // bright orange
-        (255, 189, 0), // bright orange
-        // (255, 255, 0),   // yellow
-        // (255, 255, 0),   // yellow
-        // (255, 255, 0),   // yellow
-        // (234, 10, 142), // Telekom Magenta
-        // (234, 10, 142), // Telekom Magenta
-        // (234, 10, 142), // Telekom Magenta
-        (175, 0, 255), // purple
-                       // (0, 150, 255),   // semi light blue
-                       // (0, 198, 255),   // very light blue
-                       // (0, 198, 255),   // very light blue
-                       // (0, 198, 255),   // very light blue
-                       // (255, 114, 114), // light red
-                       // (255, 114, 114), // light red
-                       // (255, 114, 114), // light red
+        (113, 255, 0),   // orange
+        (113, 255, 0),   // orange
+        (151, 253, 2),   // yellow
+        (2, 225, 255),   // light purple
+        (2, 225, 255),   // light purple
+        (3, 174, 255),   // dark purple
+        (3, 174, 255),   // dark purple
+        (3, 174, 255),   // dark purple
+                         // (255, 0, 0), // green
+                         // (0, 255, 0), // red
+                         // (0, 0, 255), // blue
     ];
 
     let i = rand::random::<u8>();
