@@ -3,6 +3,7 @@
 //! with DIN-Pin. You just need DIN pin, no clock. WS2818 uses one-wire-protocol.
 //! See the specification for details
 
+use rand::Rng;
 use rust_led_lights::{darken_rgb, get_random_pixel_val, sleep_busy_waiting_ms};
 use std::ops::Add;
 use std::time::{Duration, Instant};
@@ -11,7 +12,7 @@ use ws2818_rgb_led_spi_driver::adapter_spi::WS28xxSpiAdapter;
 
 use anyhow::Result;
 
-pub const FREQUENCY: u64 = 20; // 30 Hz
+pub const FREQUENCY: u64 = 30; // Hz
 pub const FREQUENCY_MS: u64 = 1000 / FREQUENCY;
 
 // This animation sends moving light impulses via the LED strip
@@ -19,18 +20,30 @@ fn main() -> Result<()> {
     let mut adapter = WS28xxSpiAdapter::new("/dev/spidev0.0").unwrap();
     let num_leds = 100;
     let mut anim = MovingLightStripsAnimation::new(num_leds);
+    let mut rng = rand::thread_rng();
 
     let mut next_light_time = Instant::now();
+    let mut burst_len = 0;
+    let mut pause_len = 0;
     loop {
         let now = Instant::now();
         if now >= next_light_time {
+            burst_len += rng.gen_range(1..21);
+            println!("Burst len: {}", burst_len);
+        }
+        if burst_len > 0 && pause_len == 0 {
+            burst_len -= 1;
+            pause_len += rng.gen_range(1..21);
             anim.add_next_light_impulse();
-            next_light_time = now.add(Duration::from_secs(1))
+            next_light_time = now.add(Duration::from_secs(rng.gen_range(1..6)))
+        } else if pause_len > 0 {
+            pause_len -= 1;
         }
         anim.shift_all_pixels();
         adapter
             .write_rgb(&anim.rgb_data[MOVING_LIGHT_IMPULSE_LEN..])
             .unwrap();
+
         sleep_busy_waiting_ms(FREQUENCY_MS);
     }
 }
