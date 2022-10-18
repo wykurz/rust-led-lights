@@ -3,11 +3,9 @@
 //! with DIN-Pin. You just need DIN pin, no clock. WS2818 uses one-wire-protocol.
 //! See the specification for details
 
+use rust_led_lights::{darken_rgb, get_random_pixel_val, sleep_busy_waiting_ms};
 use std::ops::Add;
 use std::time::{Duration, Instant};
-use rust_led_lights::{
-    darken_rgb, get_led_num_from_args, get_random_pixel_val, sleep_busy_waiting_ms,
-};
 use ws2818_rgb_led_spi_driver::adapter_gen::WS28xxAdapter;
 use ws2818_rgb_led_spi_driver::adapter_spi::WS28xxSpiAdapter;
 
@@ -18,9 +16,8 @@ pub const FREQUENCY_MS: u64 = 1000 / FREQUENCY;
 
 // This animation sends moving light impulses via the LED strip
 fn main() -> Result<()> {
-    println!("make sure you have \"SPI\" on your Pi enabled and that MOSI-Pin is connected with DIN-Pin!");
     let mut adapter = WS28xxSpiAdapter::new("/dev/spidev0.0").unwrap();
-    let num_leds = get_led_num_from_args();
+    let num_leds = 100;
     let mut anim = MovingLightStripsAnimation::new(num_leds);
 
     let mut next_light_time = Instant::now();
@@ -62,25 +59,25 @@ impl MovingLightStripsAnimation {
             let i = upper_border - 1 - i;
 
             if i == 0 {
-                let _ = std::mem::replace(&mut self.rgb_data[i], (0, 0, 0));
+                let _ = std::mem::take(&mut self.rgb_data[i]);
             } else {
-                let prev = self.rgb_data[i - 1].clone();
+                let prev = self.rgb_data[i - 1];
                 let _ = std::mem::replace(&mut self.rgb_data[i], prev);
             }
         }
     }
     fn add_next_light_impulse(&mut self) {
         let (r, g, b) = get_random_pixel_val();
-        let _ = std::mem::replace(&mut self.rgb_data[00], darken_rgb(r, g, b, 0.1));
-        let _ = std::mem::replace(&mut self.rgb_data[01], darken_rgb(r, g, b, 0.2));
-        let _ = std::mem::replace(&mut self.rgb_data[02], darken_rgb(r, g, b, 0.4));
-        let _ = std::mem::replace(&mut self.rgb_data[03], darken_rgb(r, g, b, 0.6));
-        let _ = std::mem::replace(&mut self.rgb_data[04], darken_rgb(r, g, b, 0.7));
-        let _ = std::mem::replace(&mut self.rgb_data[05], darken_rgb(r, g, b, 0.8));
-        let _ = std::mem::replace(&mut self.rgb_data[06], darken_rgb(r, g, b, 0.9));
-        let _ = std::mem::replace(&mut self.rgb_data[07], (r, g, b));
-        let _ = std::mem::replace(&mut self.rgb_data[08], darken_rgb(r, g, b, 0.9));
-        let _ = std::mem::replace(&mut self.rgb_data[09], darken_rgb(r, g, b, 0.8));
+        let _ = std::mem::replace(&mut self.rgb_data[0], darken_rgb(r, g, b, 0.1));
+        let _ = std::mem::replace(&mut self.rgb_data[1], darken_rgb(r, g, b, 0.2));
+        let _ = std::mem::replace(&mut self.rgb_data[2], darken_rgb(r, g, b, 0.4));
+        let _ = std::mem::replace(&mut self.rgb_data[3], darken_rgb(r, g, b, 0.6));
+        let _ = std::mem::replace(&mut self.rgb_data[4], darken_rgb(r, g, b, 0.7));
+        let _ = std::mem::replace(&mut self.rgb_data[5], darken_rgb(r, g, b, 0.8));
+        let _ = std::mem::replace(&mut self.rgb_data[6], darken_rgb(r, g, b, 0.9));
+        let _ = std::mem::replace(&mut self.rgb_data[7], (r, g, b));
+        let _ = std::mem::replace(&mut self.rgb_data[8], darken_rgb(r, g, b, 0.9));
+        let _ = std::mem::replace(&mut self.rgb_data[9], darken_rgb(r, g, b, 0.8));
         let _ = std::mem::replace(&mut self.rgb_data[10], darken_rgb(r, g, b, 0.7));
         let _ = std::mem::replace(&mut self.rgb_data[11], darken_rgb(r, g, b, 0.6));
         let _ = std::mem::replace(&mut self.rgb_data[12], darken_rgb(r, g, b, 0.4));
