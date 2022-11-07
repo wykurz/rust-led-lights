@@ -18,7 +18,7 @@ pub fn sleep_busy_waiting_ms(ms: u64) {
 /// brightness. Tries to get real colors instead of white.
 pub fn get_random_pixel_val() -> (u8, u8, u8) {
     // RED and GREEN are inverted
-    const COLORS: [(u8, u8, u8); 9] = [
+    const _HALLOWEEN_COLORS: [(u8, u8, u8); 9] = [
         (255, 255, 255), // white
         (113, 255, 0),   // orange
         (113, 255, 0),   // orange
@@ -33,10 +33,20 @@ pub fn get_random_pixel_val() -> (u8, u8, u8) {
                          // (0, 0, 255), // blue
     ];
 
-    let i = rand::random::<u8>();
-    let i = i % COLORS.len() as u8;
+    const THANKSGIVING_COLORS: [(u8, u8, u8); 7] = [
+        (47, 156, 47),  // pastel red
+        (175, 252, 44), // orange
+        (86, 182, 42),  // orange
+        (186, 219, 51), // mustard green
+        (31, 81, 22),   // brown
+        (137, 78, 38),  // dark green
+        (157, 130, 54), // light green
+    ];
 
-    COLORS[i as usize]
+    let i = rand::random::<u8>();
+    let i = i % THANKSGIVING_COLORS.len() as u8;
+
+    THANKSGIVING_COLORS[i as usize]
 }
 
 pub fn darken_rgb(r: u8, g: u8, b: u8, factor: f32) -> (u8, u8, u8) {
