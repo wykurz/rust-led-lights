@@ -33,14 +33,16 @@ pub fn get_random_pixel_val() -> (u8, u8, u8) {
                          // (0, 0, 255), // blue
     ];
 
-    const THANKSGIVING_COLORS: [(u8, u8, u8); 7] = [
-        (47, 156, 47),  // pastel red
-        (175, 252, 44), // orange
-        (86, 182, 42),  // orange
-        (186, 219, 51), // mustard green
-        (31, 81, 22),   // brown
-        (137, 78, 38),  // dark green
-        (157, 130, 54), // light green
+    const THANKSGIVING_COLORS: [(u8, u8, u8); 9] = [
+        (50, 200, 0),   // brown
+        (50, 200, 0),   // brown
+        (50, 200, 0),   // brown
+        (50, 200, 0),   // brown
+        (100, 250, 20), // orange
+        (100, 250, 20), // orange
+        (100, 250, 20), // orange
+        (100, 250, 20), // orange
+        (255, 200, 20), // green
     ];
 
     let i = rand::random::<u8>();
