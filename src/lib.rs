@@ -33,7 +33,7 @@ pub fn get_random_pixel_val() -> (u8, u8, u8) {
                          // (0, 0, 255), // blue
     ];
 
-    const THANKSGIVING_COLORS: [(u8, u8, u8); 9] = [
+    const _THANKSGIVING_COLORS: [(u8, u8, u8); 9] = [
         (50, 200, 0),   // brown
         (50, 200, 0),   // brown
         (50, 200, 0),   // brown
@@ -45,10 +45,15 @@ pub fn get_random_pixel_val() -> (u8, u8, u8) {
         (255, 200, 20), // green
     ];
 
-    let i = rand::random::<u8>();
-    let i = i % THANKSGIVING_COLORS.len() as u8;
+    const CHRISTMAS_COLORS: [(u8, u8, u8); 2] = [
+        (0, 179, 12), // red
+        (89, 13, 1),  // dark green
+    ];
 
-    THANKSGIVING_COLORS[i as usize]
+    let i = rand::random::<u8>();
+    let i = i % CHRISTMAS_COLORS.len() as u8;
+
+    CHRISTMAS_COLORS[i as usize]
 }
 
 pub fn darken_rgb(r: u8, g: u8, b: u8, factor: f32) -> (u8, u8, u8) {
