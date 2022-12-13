@@ -45,9 +45,14 @@ pub fn get_random_pixel_val() -> (u8, u8, u8) {
         (255, 200, 20), // green
     ];
 
-    const CHRISTMAS_COLORS: [(u8, u8, u8); 2] = [
+    const CHRISTMAS_COLORS: [(u8, u8, u8); 7] = [
         (0, 179, 12), // red
-        (89, 13, 1),  // dark green
+        (0, 179, 12),
+        (0, 179, 12),
+        (89, 13, 1), // dark green
+        (89, 13, 1),
+        (89, 13, 1),
+        (255, 255, 255), // white
     ];
 
     let i = rand::random::<u8>();
